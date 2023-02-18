@@ -33,10 +33,8 @@
 %else
 %bcond_with libalternatives
 %endif
-
-
 # SLE-12 variants
-%if 0%{?suse_version} < 1500
+%if 0%{?suse_version} < 1500 || 0%{?sailfishos_version}
 %define default_node_ver %NODEJS_LTS
 
 %else
@@ -145,11 +143,22 @@ install -D -m 0755 node %{buildroot}%{_bindir}/node
 ln node %{buildroot}%{_bindir}/npm
 ln node %{buildroot}%{_bindir}/npx
 
+%if 0%{?sailfishos_version}
+ln -s %{_bindir}/node%{default_node_ver} %{buildroot}%{_bindir}/node-default
+ln -s %{_bindir}/npm%{default_node_ver} %{buildroot}%{_bindir}/npm-default
+ln -s %{_bindir}/npx%{default_node_ver} %{buildroot}%{_bindir}/npx-default
+%endif
+
 %files
 %license LICENSE
 %{_bindir}/node
 %{_bindir}/npm
 %{_bindir}/npx
+%if 0%{?sailfishos_version}
+%{_bindir}/node-default
+%{_bindir}/npm-default
+%{_bindir}/npx-default
+%endif
 
 %files -n nodejs-default
 

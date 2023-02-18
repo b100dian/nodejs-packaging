@@ -197,7 +197,11 @@ Patch200:       versioned.patch
 Patch305:       qemu_timeouts_arches.patch # PATCH_FOR: 18, 19, master
 Patch307:       s390.patch    # PATCH_FOR: 18
 
-BuildRequires:  pkg-config
+%if 0%{?sailfishos_version}
+BuildRequires: pkgconfig
+%else
+#BuildRequires:  pkg-config
+#endif
 BuildRequires:  fdupes
 BuildRequires:  procps
 BuildRequires:  xz
@@ -267,7 +271,11 @@ BuildRequires:  gcc-c++
 BuildRequires:  python36
 %define forced_python_version 3.6m
 %else
+%if 0%{?sailfishos_version}
+BuildRequires: python3-base
+%else
 BuildRequires:  python3
+%endif
 %endif
 
 %else
@@ -317,7 +325,7 @@ BuildRequires:  libopenssl1_1-hmac
 # /suse_version
 %endif
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?sailfishos_version}
 BuildRequires:  openssl >= %{openssl_req_ver}
 %endif
 
